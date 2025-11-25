@@ -30,28 +30,4 @@ public class Tabla {
     public void helyez(int sor, int oszlop, Jatekos jatekos) {
         grid[sor][oszlop] = jatekos;
     }
-
-    //Tábla kiíratása konzolra
-    public void printTabla() {
-        System.out.print("  ");
-        for (int i = 0; i < meret; i++) {
-            System.out.printf("%2d", i);
-        }
-        System.out.println();
-        for (int i = 0; i < meret; i++) {
-            System.out.printf("%2d", i);
-            for (int j = 0; j < meret; j++) {
-                char jel;
-                if (grid[i][j] == Jatekos.FEKETE) {
-                    jel = '⚫';
-                } else if (grid[i][j] == Jatekos.FEHER) {
-                    jel = '⚪';
-                } else {
-                    jel = '•';
-                }
-                System.out.print(jel + " ");
-            }
-            System.out.println();
-        }
-    }
 }

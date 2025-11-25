@@ -6,7 +6,6 @@ public class Jatek implements Serializable {
     private Tabla tabla;
     private Jatekos aktualisJatekos;
     private int passzolasokSzama = 0;
-    private static final long serialVersionUID = 1L;
 
     public Jatek() {
         tabla = new Tabla();
@@ -21,6 +20,7 @@ public class Jatek implements Serializable {
         return aktualisJatekos;
     }
 
+    // Bábú lépése
     public boolean lep(int sor, int oszlop) {
         if (tabla.isEmpty(sor, oszlop)) {
             passzolasokSzama = 0;

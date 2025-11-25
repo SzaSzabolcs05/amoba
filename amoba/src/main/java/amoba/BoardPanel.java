@@ -34,6 +34,8 @@ public class BoardPanel extends JPanel {
                 if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
                     if (BoardPanel.this.jatek.lep(row, col)) {
                         repaint();
+                    }else {
+                        JOptionPane.showMessageDialog(BoardPanel.this, "Érvénytelen lépés!");
                     }
                 }
             }

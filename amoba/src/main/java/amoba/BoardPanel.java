@@ -32,10 +32,28 @@ public class BoardPanel extends JPanel {
                 int row = (e.getY() - offsetY) / CELL_SIZE;
 
                 if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
-                    if (BoardPanel.this.jatek.lep(row, col)) {
+                    int result = BoardPanel.this.jatek.lep(row, col);
+                    if (result == 1) {
                         repaint();
-                    }else {
+                    }else if(result == 0){
                         JOptionPane.showMessageDialog(BoardPanel.this, "Érvénytelen lépés!");
+                    }else if(result == 2){
+                        JOptionPane.showMessageDialog(BoardPanel.this, "A fekete játékos veszített!");
+                        repaint();
+                    }else if(result == 3){
+                        if(BoardPanel.this.jatek.getAktualisJatekos() == Jatekos.FEKETE){
+                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt bábúnál több van egy sorban! A fehér játékos nyert!");
+                        }else{
+                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt bábúnál több van egy sorban! A fekete játékos nyert!");
+                        }
+                        repaint();
+                    }else if(result == 4){
+                        if(BoardPanel.this.jatek.getAktualisJatekos() == Jatekos.FEKETE){
+                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt egy sorban! A fekete játékos nyert!");
+                        }else{
+                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt egy sorban! A fehér játékos nyert!");
+                        }
+                        repaint();
                     }
                 }
             }
@@ -46,7 +64,7 @@ public class BoardPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(new Color(222, 184, 135)); // Világosbarna háttér
         g.fillRect(0, 0, getWidth(), getHeight());
 
         // Középre igazítás

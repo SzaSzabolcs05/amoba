@@ -21,14 +21,28 @@ public class Jatek implements Serializable {
     }
 
     // Bábú lépése
-    public boolean lep(int sor, int oszlop) {
+    public int lep(int sor, int oszlop) {
         if (tabla.isEmpty(sor, oszlop)) {
             passzolasokSzama = 0;
             tabla.helyez(sor, oszlop, aktualisJatekos);
+
+            // Ellenőrizzük, hogy a fekete játékos veszített-e
+            if(aktualisJatekos == Jatekos.FEKETE){
+                if(feketeVesztes(aktualisJatekos)){
+                    return 2;
+                }
+            }
+            if(otnelTobb(sor, oszlop, aktualisJatekos)){
+                return 3; // A lépő játékos veszített
+            }
+            if(vanOt(sor, oszlop, aktualisJatekos)){
+                return 4; // A lépő játékos nyert
+            }
+
             aktualisJatekos = (aktualisJatekos == Jatekos.FEKETE) ? Jatekos.FEHER : Jatekos.FEKETE;
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
 
     public boolean passz() {
@@ -100,6 +114,7 @@ public class Jatek implements Serializable {
         return Math.max(Math.max(countViz, countFug), Math.max(countAtl1, countAtl2));
     }
 
+    // Azt vizsgálja, hogy a fekete játékos veszített-e
     public boolean feketeVesztes(Jatekos j){
         int count3 = 0;
         int count4 = 0;
@@ -112,6 +127,7 @@ public class Jatek implements Serializable {
 
         for (int sor = 0; sor < tabla.getMeret(); sor++) {
             for (int oszlop = 0; oszlop < tabla.getMeret(); oszlop++) {
+                if (tabla.getCella(sor, oszlop) != Jatekos.FEKETE) continue;
 
                 for (int[] d : irany) {
                     int dx = d[0];
@@ -184,5 +200,39 @@ public class Jatek implements Serializable {
                 return false;
         }
         return true;
+    }
+
+    private boolean otnelTobb(int sor, int oszlop, Jatekos j){
+        return hosszIranyban(sor, oszlop, j, 1, 0) > 5 ||    // vízszintes
+            hosszIranyban(sor, oszlop, j, 0, 1) > 5 ||    // függőleges
+            hosszIranyban(sor, oszlop, j, 1, 1) > 5 ||    // átló \
+            hosszIranyban(sor, oszlop, j, 1, -1) > 5;     // átló /
+    }
+
+    private boolean vanOt(int sor, int oszlop, Jatekos j) {
+        return hosszIranyban(sor, oszlop, j, 1, 0) == 5 ||    // vízszintes
+            hosszIranyban(sor, oszlop, j, 0, 1) == 5 ||    // függőleges
+            hosszIranyban(sor, oszlop, j, 1, 1) == 5 ||    // átló \
+            hosszIranyban(sor, oszlop, j, 1, -1) == 5;     // átló /
+    }
+
+    private int hosszIranyban(int sor, int oszlop, Jatekos j, int dx, int dy) {
+        int count = 1;
+        int x = sor + dx, y = oszlop + dy;
+
+        while (x >= 0 && x < tabla.getMeret() && y >= 0 && y < tabla.getMeret()
+                && tabla.getCella(x, y) == j) {
+            count++;
+            x += dx; y += dy;
+        }
+
+        x = sor - dx; y = oszlop - dy;
+        while (x >= 0 && x < tabla.getMeret() && y >= 0 && y < tabla.getMeret()
+                && tabla.getCella(x, y) == j) {
+            count++;
+            x -= dx; y -= dy;
+        }
+
+        return count;
     }
 }

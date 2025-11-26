@@ -38,7 +38,7 @@ public class BoardPanel extends JPanel {
                     }else if(result == 0){
                         JOptionPane.showMessageDialog(BoardPanel.this, "Érvénytelen lépés!");
                     }else if(result == 2){
-                        JOptionPane.showMessageDialog(BoardPanel.this, "A fekete játékos veszített!");
+                        JOptionPane.showMessageDialog(BoardPanel.this, "Érvénytelen lépés! A fehér játékos nyert!");
                         repaint();
                     }else if(result == 3){
                         if(BoardPanel.this.jatek.getAktualisJatekos() == Jatekos.FEKETE){

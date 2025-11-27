@@ -1,5 +1,5 @@
 # Amőba
-A játékot grafikus felületeten készítettem el, így lehet benne kattintással lépni.
+A játékot grafikus felületeten készítettem el, így lehet benne kattintással lépni. A feladat specifikációja megtalálható, a "specifikacio" mappában.
 ## Leírás
 A projekt az amőba japán, igazságosabb változatát valósítja meg. A játék egy 15 x 15-ös táblán történik, amit 2 db játékos tud játszani.
 ## Szabályok

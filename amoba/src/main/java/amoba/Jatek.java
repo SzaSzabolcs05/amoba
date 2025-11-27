@@ -28,7 +28,7 @@ public class Jatek implements Serializable {
 
             // Ellenőrizzük, hogy a fekete játékos veszített-e
             if(aktualisJatekos == Jatekos.FEKETE){
-                if(feketeVesztes(aktualisJatekos)){
+                if(feketeVesztes()){
                     return 2; // A fekete játékos veszített
                 }
             }
@@ -56,7 +56,7 @@ public class Jatek implements Serializable {
     }
 
     // Azt vizsgálja, hogy a fekete játékos veszített-e
-    public boolean feketeVesztes(Jatekos j){
+    public boolean feketeVesztes(){
         int count3 = 0;
         int count4 = 0;
 
@@ -75,9 +75,9 @@ public class Jatek implements Serializable {
                     int dy = d[1];
 
                     // Azt számoljuk meg, hogy hány darab van (nyitott hármas és négyes)
-                    if (isOpenThree(sor, oszlop, dx, dy, j)) {
+                    if (isOpenThree(sor, oszlop, dx, dy, Jatekos.FEKETE)) {
                         count3++;
-                    }else if(isOpenFour(sor, oszlop, dx, dy, j)){
+                    }else if(isOpenFour(sor, oszlop, dx, dy, Jatekos.FEKETE)){
                         count4++;
                     }
                 }

@@ -20,7 +20,7 @@ public class Jatek implements Serializable {
         return aktualisJatekos;
     }
 
-    // Bábú lépése
+    // Bábu léptet és közben ellenőrzi, hogy nyert-e valaki vagy érvénytelen lépés történt
     public int lep(int sor, int oszlop) {
         if (tabla.isEmpty(sor, oszlop)) {
             passzolasokSzama = 0;
@@ -29,11 +29,11 @@ public class Jatek implements Serializable {
             // Ellenőrizzük, hogy a fekete játékos veszített-e
             if(aktualisJatekos == Jatekos.FEKETE){
                 if(feketeVesztes(aktualisJatekos)){
-                    return 2;
+                    return 2; // A fekete játékos veszített
                 }
             }
             if(otnelTobb(sor, oszlop, aktualisJatekos)){
-                return 3; // A lépő játékos veszített
+                return 3; // A lépő játékos veszített (fekete is és fehér is)
             }
             if(vanOt(sor, oszlop, aktualisJatekos)){
                 return 4; // A lépő játékos nyert
@@ -45,6 +45,7 @@ public class Jatek implements Serializable {
         return 0;
     }
 
+    // Passzolás kezelése, visszatér true-val, ha döntetlen a játék
     public boolean passz() {
         passzolasokSzama++;
         if(passzolasokSzama >= 2) {

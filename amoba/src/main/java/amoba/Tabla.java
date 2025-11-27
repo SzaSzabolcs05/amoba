@@ -1,6 +1,7 @@
 package amoba;
+import java.io.Serializable;
 
-public class Tabla {
+public class Tabla implements Serializable{
     private final int meret = 15;
     private Jatekos[][] grid;
 

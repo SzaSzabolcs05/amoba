@@ -10,6 +10,7 @@ public class BoardPanel extends JPanel {
     private static final int GRID_SIZE = 15;
 
     private Jatek jatek;
+    private GameFrame gameFrame;
 
     //Setter új játék kezdéséhez
     public void setJatek(Jatek jatek) {
@@ -17,8 +18,9 @@ public class BoardPanel extends JPanel {
         repaint();
     }
 
-    public BoardPanel(Jatek jatek) {
+    public BoardPanel(Jatek jatek, GameFrame gf) {
         this.jatek = jatek;
+        this.gameFrame = gf;
         setPreferredSize(new Dimension(CELL_SIZE * GRID_SIZE, CELL_SIZE * GRID_SIZE));
 
         addMouseListener(new MouseAdapter() {
@@ -38,20 +40,20 @@ public class BoardPanel extends JPanel {
                     }else if(result == 0){
                         JOptionPane.showMessageDialog(BoardPanel.this, "Érvénytelen lépés!");
                     }else if(result == 2){
-                        JOptionPane.showMessageDialog(BoardPanel.this, "Érvénytelen lépés! A fehér játékos nyert!");
+                        gameFrame.vegeKepernyo("Illegális lépés! A fehér játékos nyert!");
                         repaint();
                     }else if(result == 3){
                         if(BoardPanel.this.jatek.getAktualisJatekos() == Jatekos.FEKETE){
-                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt bábúnál több van egy sorban! A fehér játékos nyert!");
+                            gameFrame.vegeKepernyo("Öt bábúnál több van egy sorban! A fehér játékos nyert!");
                         }else{
-                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt bábúnál több van egy sorban! A fekete játékos nyert!");
+                            gameFrame.vegeKepernyo("Öt bábúnál több van egy sorban! A fekete játékos nyert!");
                         }
                         repaint();
                     }else if(result == 4){
                         if(BoardPanel.this.jatek.getAktualisJatekos() == Jatekos.FEKETE){
-                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt egy sorban! A fekete játékos nyert!");
+                            gameFrame.vegeKepernyo("Öt egy sorban! A fekete játékos nyert!");
                         }else{
-                            JOptionPane.showMessageDialog(BoardPanel.this, "Öt egy sorban! A fehér játékos nyert!");
+                            gameFrame.vegeKepernyo("Öt egy sorban! A fehér játékos nyert!");
                         }
                         repaint();
                     }

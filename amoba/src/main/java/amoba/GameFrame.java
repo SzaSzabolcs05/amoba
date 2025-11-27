@@ -34,7 +34,7 @@ public class GameFrame extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Játék tábla
-        boardPanel = new BoardPanel(jatek);
+        boardPanel = new BoardPanel(jatek, this);
         add(boardPanel, BorderLayout.CENTER);
 
         // Gombok eseményei
@@ -47,28 +47,70 @@ public class GameFrame extends JFrame {
             boardPanel.repaint();
 
             if (jatek.passz()) {
-                dontetlenKepernyo();
+                vegeKepernyo("A játék döntetlen!");
             }
         });
 
         saveBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Save még nincs implementálva");
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Játék mentése");
+            fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\szabc\\Iskola\\Szasza-BME\\3.felev\\Prog3\\NagyHF\\amoba\\target\\Save"));
+            int valasz = fileChooser.showSaveDialog(this);
+
+            if (valasz == JFileChooser.APPROVE_OPTION) {
+                try {
+                    java.io.FileOutputStream fos = new java.io.FileOutputStream(fileChooser.getSelectedFile());
+                    java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(fos);
+
+                    oos.writeObject(jatek);
+
+                    oos.close();
+                    fos.close();
+
+                    JOptionPane.showMessageDialog(this, "Sikeres mentés!");
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Hiba mentés közben: " + ex.getMessage());
+                }
+            }
         });
 
         loadBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Load még nincs implementálva");
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\szabc\\Iskola\\Szasza-BME\\3.felev\\Prog3\\NagyHF\\amoba\\target\\Save"));
+            fileChooser.setDialogTitle("Játék betöltése");
+            int valasz = fileChooser.showOpenDialog(this);
+            
+            if (valasz == JFileChooser.APPROVE_OPTION) {
+                try {
+                    java.io.FileInputStream fis = new java.io.FileInputStream(fileChooser.getSelectedFile());
+                    java.io.ObjectInputStream ois = new java.io.ObjectInputStream(fis);
+
+                    jatek = (Jatek) ois.readObject();
+                    boardPanel.setJatek(jatek);
+
+                    ois.close();
+                    fis.close();
+
+                    JOptionPane.showMessageDialog(this, "Sikeres betöltés!");
+                    boardPanel.repaint();
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Hiba betöltés közben: " + ex.getMessage());
+                }
+            }
         });
 
         setVisible(true);
     }
 
     // Döntetlen esetén felugró ablak
-    private void dontetlenKepernyo() {
+    public void vegeKepernyo(String message) {
         Object[] options = {"Új játék", "Kilépés"};
         int choice = JOptionPane.showOptionDialog(
                 this,
-                "A játék döntetlen!",
-                "Döntetlen",
+                message,
+                "Játék vége",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
                 null,

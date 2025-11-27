@@ -54,66 +54,6 @@ public class Jatek implements Serializable {
         return false;
     }
 
-    public int countEgySorba(int sor, int oszlop) {
-        //Egy soron belül hány darab azonos színű bábu van
-        int countViz = 1;
-        int i = 1;
-        // jobbra
-        while (sor + i < tabla.getMeret() && tabla.getCella(sor + i, oszlop) == aktualisJatekos) {
-            countViz++;
-            i++;
-        }
-        // balra
-        i = 1;
-        while (sor - i >= 0 && tabla.getCella(sor - i, oszlop) == aktualisJatekos) {
-            countViz++;
-            i++;
-        }
-
-        //Egy oszlopon belül hány darab azonos színű bábu van
-        int countFug = 1;
-        i = 1;
-        // lefelé
-        while (oszlop + i < tabla.getMeret() && tabla.getCella(sor, oszlop + i) == aktualisJatekos) {
-            countFug++;
-            i++;
-        }
-        // felfelé
-        i = 1;
-        while (oszlop - i >= 0 && tabla.getCella(sor, oszlop - i) == aktualisJatekos) {
-            countFug++;
-            i++;
-        }
-
-        // (\) Átlósan hány darab azonos színű bábu van
-        int countAtl1 = 1;
-        i = 1;
-        while (sor + i < tabla.getMeret() && oszlop + i < tabla.getMeret() && tabla.getCella(sor + i, oszlop + i) == aktualisJatekos) {
-            countAtl1++;
-            i++;
-        }
-        i = 1;
-        while (sor - i >= 0 && oszlop - i >= 0 && tabla.getCella(sor - i, oszlop - i) == aktualisJatekos) {
-            countAtl1++;
-            i++;
-        }
-
-        // (/) Átlósan hány darab azonos színű bábu van
-        int countAtl2 = 1;
-        i = 1;
-        while (sor + i < tabla.getMeret() && oszlop - i >= 0 && tabla.getCella(sor + i, oszlop - i) == aktualisJatekos) {
-            countAtl2++;
-            i++;
-        }
-        i = 1;
-        while (sor - i >= 0 && oszlop + i < tabla.getMeret() && tabla.getCella(sor - i, oszlop + i) == aktualisJatekos) {
-            countAtl2++;
-            i++;
-        }
-
-        return Math.max(Math.max(countViz, countFug), Math.max(countAtl1, countAtl2));
-    }
-
     // Azt vizsgálja, hogy a fekete játékos veszített-e
     public boolean feketeVesztes(Jatekos j){
         int count3 = 0;
@@ -127,12 +67,13 @@ public class Jatek implements Serializable {
 
         for (int sor = 0; sor < tabla.getMeret(); sor++) {
             for (int oszlop = 0; oszlop < tabla.getMeret(); oszlop++) {
-                if (tabla.getCella(sor, oszlop) != Jatekos.FEKETE) continue;
+                if (tabla.getCella(sor, oszlop) != Jatekos.FEKETE) continue; // Csak a fekete bábukat vizsgáljuk, ha fehér vagy üres akkor nézi a következőt
 
-                for (int[] d : irany) {
+                for (int[] d : irany) { // Egy adott bábutól megnézi az összes irányba
                     int dx = d[0];
                     int dy = d[1];
 
+                    // Azt számoljuk meg, hogy hány darab van (nyitott hármas és négyes)
                     if (isOpenThree(sor, oszlop, dx, dy, j)) {
                         count3++;
                     }else if(isOpenFour(sor, oszlop, dx, dy, j)){
@@ -141,6 +82,7 @@ public class Jatek implements Serializable {
                 }
             }
         }
+        // Ha true-val tér vissza, akkor a fekete játékos veszített
         if(count4 >=2 || count3 >=2){
             return true;
         }
@@ -155,19 +97,19 @@ public class Jatek implements Serializable {
     private boolean isOpenThree(int sor, int oszlop, int dx, int dy, Jatekos j) {
         int m = tabla.getMeret();
 
-        // Ellenőrzi, hogy a [sor−dx , oszlop−dy] üres-e (tehát a bábútól egy lépéssel vissza)
+        // Ellenőrzi, hogy a [sor−dx , oszlop−dy] üres-e (tehát a bábutól egy lépéssel vissza)
         int ax = sor - dx;
         int ay = oszlop - dy;
         if ((ax>=0 && ax < m && ay >= 0 && ay < m) && tabla.getCella(ax, ay) != null)
             return false;
 
-        // Ellenőrzi, hogy a [sor + 3*dx, oszlop + 3*dy] üres-e (tehát az első bábútól hárommal előre)
+        // Ellenőrzi, hogy a [sor + 3*dx, oszlop + 3*dy] üres-e (tehát az első bábutól hárommal előre)
         int bx = sor + 3 * dx;
         int by = oszlop + 3 * dy;
         if ((bx>=0 && bx < m && by >= 0 && by < m) && tabla.getCella(bx, by) != null)
             return false;
 
-        // Ellenőrzi, hogy a három bábú az azonos-e
+        // Ellenőrzi, hogy a három bábu az azonos-e (az előzőek között vizsgált részen)
         for (int i = 0; i < 3; i++) {
             int x = sor + i * dx;
             int y = oszlop + i * dy;

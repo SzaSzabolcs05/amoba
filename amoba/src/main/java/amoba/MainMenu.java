@@ -11,13 +11,14 @@ public class MainMenu extends JPanel {
         this.gameFrame = gf;
         
         // A főmenü megjelenítésekor középen legyenek a gombok
+        // GridBagLayout használata, hogy a gombok középre kerüljenek és egymás alatt helyezkedjenek el
         setLayout(new GridBagLayout()); 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 0, 10, 0); // Térköz a gombok között
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL;   // Gombok kitöltik a rendelkezésre álló helyet vízszintesen
         gbc.gridx = 0;
         
-        // --- Gombok létrehozása ---
+        // Gombok létrehozása
         
         // 1. Indítás gomb
         JButton startBtn = new JButton("Indítás");
@@ -36,8 +37,6 @@ public class MainMenu extends JPanel {
         exitBtn.setPreferredSize(new Dimension(150, 40));
         gbc.gridy = 2;
         add(exitBtn, gbc);
-        
-        // --- Eseménykezelők ---
         
         // Indítás: Megjeleníti a játékpanelt és elindít egy új játékot
         startBtn.addActionListener(e -> {

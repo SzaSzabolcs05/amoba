@@ -26,6 +26,7 @@ public class GameFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
+        // Játék és panelek inicializálása
         jatek = new Jatek();
         boardPanel = new BoardPanel(jatek, this);
         mainMenu = new MainMenu(this); 
@@ -73,7 +74,7 @@ public class GameFrame extends JFrame {
         boardPanel.setJatek(jatek);
     }
 
-    // A Játékpanel + játékon belüli menü megjelenítése
+    // A Játékpanel + játékon belüli menü megjelenítés
     public void showGame() {
         getContentPane().removeAll(); 
         setSize(CELL_SIZE * GRID_SIZE + 50, CELL_SIZE * GRID_SIZE + 100);
@@ -96,10 +97,11 @@ public class GameFrame extends JFrame {
         repaint();
     }
     
-    // Segéd függvény a játék mentéséhez
+    // Játék mentése fájlba
     private void saveGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Játék mentése");
+        // Ez az alapértelmezett mentési könyvtár
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\szabc\\Iskola\\Szasza-BME\\3.felev\\Prog3\\NagyHF\\amoba\\target\\Save")); 
         int valasz = fileChooser.showSaveDialog(this);
 
@@ -120,9 +122,10 @@ public class GameFrame extends JFrame {
         }
     }
     
-    // Segéd függvény a játék betöltéséhez
+    // Játék betöltése fájlból
     public void loadGame() {
         JFileChooser fileChooser = new JFileChooser();
+        // Ez az alapértelmezett betöltési könyvtár
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\szabc\\Iskola\\Szasza-BME\\3.felev\\Prog3\\NagyHF\\amoba\\target\\Save"));
         fileChooser.setDialogTitle("Játék betöltése");
         int valasz = fileChooser.showOpenDialog(this);
@@ -148,18 +151,19 @@ public class GameFrame extends JFrame {
         }
     }
 
-    // Miután vége a játéknak, megjelenít ezt az ablakot
+    // Miután vége a játéknak, megjeleníti ezt az ablakot, egyedi üzenettel
     public void vegeKepernyo(String message) {
         Object[] options = {"Új játék", "Főmenü", "Kilépés"}; 
         int choice = JOptionPane.showOptionDialog(
-                this,
-                message,
-                "Játék vége",
-                JOptionPane.YES_NO_CANCEL_OPTION, 
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                options,
-                options[0]
+            this,
+            message,
+            "Játék vége",
+            // Opciók: Új játék, Főmenü, Kilépés (egymás mellett helyezve)
+            JOptionPane.YES_NO_CANCEL_OPTION, 
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            options,
+            options[0]
         );
 
         if (choice == JOptionPane.YES_OPTION) { // Új játék

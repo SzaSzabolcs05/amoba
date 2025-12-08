@@ -44,7 +44,7 @@ public class Jatek implements Serializable {
             aktualisJatekos = (aktualisJatekos == Jatekos.FEKETE) ? Jatekos.FEHER : Jatekos.FEKETE;
             return 1;
         }
-        return 0;
+        return 0;   // Érvénytelen lépés, van már bábú a megadott helyen
     }
 
     // Passzolás kezelése, visszatér true-val, ha döntetlen a játék

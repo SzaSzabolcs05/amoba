@@ -7,11 +7,13 @@ public class Jatek implements Serializable {
     private Jatekos aktualisJatekos;
     private int passzolasokSzama = 0;
 
+    //Konstruktor új játék létrehozásához
     public Jatek() {
         tabla = new Tabla();
         aktualisJatekos = Jatekos.FEKETE;
     }
 
+    // Getterek
     public Tabla getTabla() {
         return tabla;
     }
